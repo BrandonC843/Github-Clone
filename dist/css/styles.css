@@ -1,1 +1,1 @@
-*{box-sizing:border-box}body{font-family:Helvetica, Arial, sans-serif}h1{font-size:300px;text-align:center;color:chartreuse;font-size:12vw}
+*{box-sizing:border-box}body{font-family:Helvetica, Arial, sans-serif;background-color:skyblue}h1{font-size:300px;text-align:center;color:darkred;font-size:12vw}.column-container{display:inline-block;vertical-align:top;width:100%}
