@@ -26,7 +26,7 @@ function buildGitHubTemplate(profileApiData, repositoryApiData){
             <p>${profileApiData.name}</p>
             <p>${profileApiData.login}</p>
             <button class="follow" type="button">FOLLOW</button>
-            <h3>block or report user</h3>
+            <h3>Block or Report user</h3>
             <hr>
             <p><strong>Stars: </strong>STARS</p>
             <p><strong>Following: </strong>${profileApiData.following}</p>
