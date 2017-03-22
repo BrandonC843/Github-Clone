@@ -19,8 +19,9 @@ function buildGitHubTemplate(profileApiData, repositoryApiData){
    }).join('')
 
    return`
+   <div class="fluid-container">
       <div class ="row profile-col">
-         <div class = "col-xs-3">
+         <div class = "col-xs-3 col-md-3 container">
             <img src="${profileApiData.avatar_url}"/>
             <p>${profileApiData.name}</p>
             <p>${profileApiData.login}</p>
@@ -32,10 +33,10 @@ function buildGitHubTemplate(profileApiData, repositoryApiData){
             <p><strong>Followers: </strong>${profileApiData.followers}</p>
             <p><strong>Website: </strong>${profileApiData.html_url}</p>
          </div>
-         <div class = 'col-xs-9'>
+         <div class = 'col-xs-9 col-md-9 container'>
             ${createRepositoryListHtmlComponent}
-            <hr>
          </div>
+      </div>
       </div>
    `
 }
