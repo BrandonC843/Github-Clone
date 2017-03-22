@@ -1,55 +1,78 @@
 import $ from 'jquery'
-import { githubApiKey } from '../../secrets.js'
-var forEach = function(arr, func){
-    for(var i = 0 ; i < arr.length; i++){
-        func(arr[i], i, arr)
-    }
+import {githubApiKey} from '../../secrets.js'
+
+
+// build it similar to demos on Day-23 and Day-24/////
+// select the container you want to dynamically render it to from index.html
+var appContainerEl = document.querySelector('#app-container');
+// buid the HTML template
+function buildGitHubTemplate(profileApiData, repositoryApiData){
+   var repositoryList = repositoryApiData
+   var createRepositoryListHtmlComponent = repositoryList.map(function(reposObj){
+      return`
+         <div class='repos-col'>
+            <p><strong>${reposObj.name}</strong></p>
+            <p>${reposObj.description} | ${reposObj.language}</p>
+            <hr>
+         </div>
+      `
+   }).join('')
+
+   return`
+      <div class ="row profile-col">
+         <div class = "col-xs-3">
+            <img src="${profileApiData.avatar_url}"/>
+            <p>${profileApiData.name}</p>
+            <p>${profileApiData.login}</p>
+            <button class="follow" type="button">FOLLOW</button>
+            <h3>block or report user</h3>
+            <hr>
+            <p><strong>Stars: </strong>STARS</p>
+            <p><strong>Following: </strong>${profileApiData.following}</p>
+            <p><strong>Followers: </strong>${profileApiData.followers}</p>
+            <p><strong>Website: </strong>${profileApiData.html_url}</p>
+         </div>
+         <div class = 'col-xs-9'>
+            ${createRepositoryListHtmlComponent}
+            <hr>
+         </div>
+      </div>
+   `
 }
-var fetchgitHubProfilePromise = $.getJSON('https://api.github.com/users/BrandonC843').then(function(serverRes){
-   console.log(serverRes);
-})
-// var fetchGitHubRepoPromise = $.getJSON('https://api.github.com/users/BrandonC843/repos').then(function(serverRes){})
-// console.log(serverRes)
-var dynamicContent = document.querySelector('.dynamic')
+
+// set up controllerRouter//
+
+var controllerRouter = function(){
 var currentRoute = window.location.hash.slice(1)
 
-var contentBuild = function(repoData, profileData){
-   var profileDataString = '<div class = "profiles-right">'
-   var repositoryDataString = '<div class = "repositories-left"'
+   if(currentRoute.length === 0){
+         currentRoute = '';
+         // fetching profile //
+         var myProfilePromise = $.getJSON(`https://api.github.com/users/BrandonC843?access_token=${githubApiKey}`)
+         // fetching repos //
+         var myRepositoryPromise = $.getJSON(`https://api.github.com/users/BrandonC843/repos?access_token=${githubApiKey}`)
+
+// mutli-fetch promise-day24
+      $.when(myProfilePromise, myRepositoryPromise).then(function(profileData, repositoryData){
+        appContainerEl.innerHTML = buildGitHubTemplate(profileData[0], repositoryData[0]);
+      })
+   }
+   if(currentRoute !== ''){
+      var myProfilePromise = $.getJSON(`https://api.github.com/users/` + currentRoute)
+      var myRepositoryPromise = $.getJSON(`https://api.github.com/users/` + currentRoute + `/repos`)
+
+      $.when(myProfilePromise, myRepositoryPromise).then(function(profileData, repositoryData){
+      appContainerEl.innerHTML = buildGitHubTemplate(profileData[0], repositoryData[0])
+      })
+   }
 }
 
-var ProfileDataString += {`
-   <img src="${profInfo.avatar_url}"/>
-   <h2>${profInfo.name}</h2>
-   <h3>${profInfo.login}</h3>
-   <p>Block or report users</p>
-   </hr>
-   <p>${profInfo.blog}</p>
-   <p><i class="fa fa-map-signs" aria-hidden="true"></i>${profInfo.location}</p>
-   <p><i class="fa fa-envelope-square" aria-hidden="true"></i>${profInfo.email}</p>
-   <p><i class="fa fa-link" aria-hidden="true"></i>${profInfo.html_url}</p>
-   `}
-
-   repositoryDataString += {`
-
-
-
-      `}
-
-
-      if(currentRoute === ''){
-      var profilePromise = $.getJSON('https://api.github.com/users/BrandonC843');
-      var reposPromise = $.getJSON('https://api.github.com/users/BrandonC843/repos');
-      $.when(profilePromise, reposPromise).then(function(profileData, repoData){
-        injectContent.innerHTML = contentBuild(profileData[0], repoData[0]);
-      })
-      return;
-    }
-
- var fetchgitHubProfilePromise = $.getJSON('https://api.github.com/users/BrandonC843').then(function(serverRes){})
- var fetchGitHubRepoPromise = $.getJSON('https://api.github.com/users/BrandonC843/repos').then(function(serverRes){})
- console.log(serverRes)
-.when(fetchGitHubProfile, fetchGitHubRepos).then(function(profileDataString, repoDataString){
-
-   appContainerEl.innerHTML =
+var profileText = document.querySelector('input');
+    profileText.addEventListener('keypress', function(evt){
+      if(evt.keyCode === 13){
+      window.location.hash = profileText.value
+   }
 })
+   controllerRouter()
+   window.addEventListener('hashchange', controllerRouter);
+   profileText.addEventListener('keypress', controllerRouter);
