@@ -14,16 +14,14 @@ body{
 	display: inline-flex;
 	background-color: grey;
 	color:white;
-	margin-left: 0;
-	margin-right: 0;
 }
 .nav-header p{
-	margin-left: 15px;
-	margin-right: 15px;
+	margin-left: 25px;
+	margin-right: 25px;
 }
 .nav-header i {
-	margin-left: 15px;
-	margin-right: 15px;
+	margin-left: 45px;
+	margin-right: 37px;
 	padding-top: 25px;
 }
 .search{
@@ -42,10 +40,11 @@ body{
 }
 .profile-col{
 display: inline-flex;
-margin-left: 25px;
-margin-top: 40px;
+margin-left: 3px;
+margin-top: 20px;
+
 }
 
 .profile-col img{
-	max-width: 50%;
+	max-width: 65%;
 }

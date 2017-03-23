@@ -9,15 +9,17 @@ var appContainerEl = document.querySelector('#app-container');
 function buildGitHubTemplate(profileApiData, repositoryApiData){
    var repositoryList = repositoryApiData
    var createRepositoryListHtmlComponent = repositoryList.map(function(reposObj){
+      // console.log(reposObj);
       return`
          <div class='repos-col'>
-            <p><strong>${reposObj.name}</strong></p>
-            <p>${reposObj.description} | ${reposObj.language}</p>
             <hr>
+            <p><strong>${reposObj.name}</strong></p>
+            <p>${reposObj.description} | ${reposObj.language} | ${reposObj.created_at}</p>
+
          </div>
       `
    }).join('')
-
+console.log(profileApiData);
    return`
    <div class="fluid-container">
       <div class ="row profile-col">
@@ -28,16 +30,16 @@ function buildGitHubTemplate(profileApiData, repositoryApiData){
             <button class="follow" type="button">FOLLOW</button>
             <h3>Block or Report user</h3>
             <hr>
-            <p><strong>Stars: </strong>STARS</p>
-            <p><strong>Following: </strong>${profileApiData.following}</p>
-            <p><strong>Followers: </strong>${profileApiData.followers}</p>
-            <p><strong>Website: </strong>${profileApiData.html_url}</p>
+            <p><strong>${profileApiData.company}</strong></p>
+            <p><strong>${profileApiData.location}</strong></p>
+            <p><strong>${profileApiData.email}</strong></p>
+            <p><strong>${profileApiData.html_url}</strong></p>
          </div>
          <div class = 'col-xs-9 col-md-9 container'>
             ${createRepositoryListHtmlComponent}
          </div>
       </div>
-      </div>
+   </div>
    `
 }
 
